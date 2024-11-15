@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
-inputs,prediction,id,metrics,event_timestamp
->>>>>>> Stashed changes
+review_text,prediction,id,metrics,event_timestamp
 "{""text"":""Uber has done a great job to provide us an alternative transportation for people who don't want to use bus or taxis. It provides security and privacy for the customers.""}","[{""label"":""5"",""score"":1.0}]",00029140-3e1a-41ca-be26-a30fdd36d29e,"{""text_length"":168}",2017-09-29T00:00:00.000
 "{""text"":""I've drove Uber for several months last year. I haven't drove for them since I found a good paying job but as of now could use the extra money for holidays. I've been trying to log back into my active account but had no luck retrieving a varification code since I no longer have the same phone/number. I've tried numerous times to contact them about this but with no luck. Every message I send are returned saying I cant reply to that email. & when I go to the website for Uber help I stil get no results back.""}","[{""label"":""1"",""score"":1.0}]",001d6833-4121-4059-b521-6b1bf997b8f2,"{""text_length"":510}",2017-10-09T00:00:00.000
 "{""text"":""I have a worst experience in UBER. Most Cheated company, worst drivers, rash driving. Never ever think to book this cab.  I am not getting the option of negative rating.""}","[{""label"":""1"",""score"":1.0}]",00301095-71a4-4543-a026-56e0a699aad9,"{""text_length"":169}",2016-04-28T00:00:00.000

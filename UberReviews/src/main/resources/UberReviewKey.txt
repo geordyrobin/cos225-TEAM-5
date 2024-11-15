@@ -1,5 +1,0 @@
-inputs,prediction,id,metrics,event_timestamp
-
-
-
-
