@@ -1,7 +1,7 @@
 package com.uber_reviews.menu;
 
 import com.uber_reviews.database.Database;
-import com.uber_reviews.reviews.Reviews;
+import com.uber_reviews.reviews.Review;
 
 
 import java.io.BufferedReader;
@@ -21,19 +21,21 @@ public class Menu {
         // Parse UberReviewsData.csv
         String csvFile = "src/main/resources/UberReviewsData.csv";
         String line;
-        String delimiter = ",";
+        String delimiter = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)\")";
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             // Skip the first header line
             br.readLine();
 
             while ((line = br.readLine()) != null) {
-                String[] reviewData = line.split(delimiter);
-                String originalTitle = reviewData[1];
-                String overview = reviewData[0];
-                Float rating = Float.parseFloat(reviewData[reviewData.length - 2]);
+                String[] reviewData = line.split(delimiter, -1);
+                String reviewText = reviewData[0];
+                String reviewScore = reviewData[1];
+                String reviewID = reviewData[2];
+                String reviewLength = reviewData[3];
+                String reviewTime = reviewData[4];
 
-                Review reviewObject = new review(originalTitle, overview, rating);
+                Review reviewObject = new review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
                 reviewDatabase.addToDatabase(reviewObject.getDocument());
             }
         } catch (IOException e) {
