@@ -17,11 +17,6 @@ public class Menu{
 public static void main(String[] args) {
 
     System.out.println("Initializing the Uber Review app...");
-
-
-    // Ideally you want to make this menu an endless loop until the user enters to
-    // exit the app.
-    // When they select the option, you call the shutDown method.
     System.out.println("Hello! Welcome to the Uber Review app!");
     Scanner scanner = new Scanner(System.in);
 
