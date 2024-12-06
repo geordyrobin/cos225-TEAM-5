@@ -13,7 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import org.bson.BsonValue;
 
-public class Menu{
+public class Menu extends Delete{
 public static void main(String[] args) {
 
     System.out.println("Initializing the Uber Review app...");
@@ -21,7 +21,7 @@ public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
 
     int choice = 0;
-    // int deletion = 0;
+    int deletion = 0;
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
@@ -47,11 +47,7 @@ public static void main(String[] args) {
                 break;
 
             case 2:
-            System.out.print("Enter your the review ID: ");
-                // if (scanner.hasNextInt()) {
-                //     deletion = scanner.nextInt();
-                //     scanner.nextLine();
-                //     Delete();
+                    Remove();
                     System.out.println("Removing a review from the database");
                 
                     break;
