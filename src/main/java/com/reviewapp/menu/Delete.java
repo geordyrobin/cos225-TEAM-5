@@ -10,7 +10,7 @@ import org.bson.conversions.Bson;
 import static com.mongodb.client.model.Filters.eq;
 
 abstract public class Delete{
-    public static void main(String[] args) {
+    public static void Remove() {
             System.out.println("Hello, Which review would you like to delete\"");
             Scanner choice = new Scanner(System.in);  // Create a Scanner object
             String target = choice.nextLine();
@@ -20,9 +20,9 @@ abstract public class Delete{
             // delete one document
             Bson filter = eq("id", target);
             DeleteResult result = gradesCollection.deleteOne(filter);
-            System.out.println(result);
-  
+            System.out.println(result); 
   }
 
 }
+
 }
