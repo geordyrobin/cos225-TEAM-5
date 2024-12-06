@@ -1,4 +1,4 @@
-package com.uber_reviews.database;
+package com.reviewapp.database;
 
 import org.bson.Document;
 
@@ -12,11 +12,11 @@ public class Database {
     private String connectionString, databaseName, collectionName;
 
     public Database(String dbName, String collectionName) {
-        // Write your own connection string here!
+        // connection string
         this.connectionString = "mongodb+srv://username:password@uberReviewData.ebpvq.mongodb.net/?retryWrites=true&w=majority&appName=uberReviewData";
         this.databaseName = dbName;
         this.collectionName = collectionName;
-    }
+    } // Database constructor with connection string for the database
 
     public Database(String connectionString, String dbName, String collectionName) {
         this.connectionString = connectionString;

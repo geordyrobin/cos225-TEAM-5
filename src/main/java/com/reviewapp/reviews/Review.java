@@ -1,4 +1,4 @@
-package com.uber_reviews.reviews;
+package com.reviewapp.reviews;
 
 import org.bson.Document;
 
