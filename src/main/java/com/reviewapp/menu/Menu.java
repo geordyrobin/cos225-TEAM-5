@@ -21,14 +21,13 @@ public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
 
     int choice = 0;
-    int deletion = 0;
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
         System.out.println("1. Add a Uber review to the database.");
         System.out.println("2. Remove A Uber review from database.");
-        //System.out.println("3. Find specific rating reviews.");
-        //System.out.println("4. Classify Uber review.");
+        System.out.println("3. Find specific rating reviews.");
+        System.out.println("4. Classify Uber review.");
         System.out.println("5. Edit Uber review."); 
         System.out.println("6. Exit.");
 
@@ -47,7 +46,7 @@ public static void main(String[] args) {
                 break;
 
             case 2:
-                    Remove();
+                    Remove(); // calls the remove function in the delete class to remove a single ID from the database
                     System.out.println("Removing a review from the database");
                 
                     break;
