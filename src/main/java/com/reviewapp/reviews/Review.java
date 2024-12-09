@@ -40,9 +40,9 @@ public class Review{
 
     public Document getDocument() {
         Document document = new Document();
+        document.append("ID", reviewID);
         document.append("Text", reviewText);
         document.append("Score", reviewScore);
-        document.append("ID", reviewID);
         document.append("Length", reviewLength);
         document.append("Time", reviewTime);
         return document;
