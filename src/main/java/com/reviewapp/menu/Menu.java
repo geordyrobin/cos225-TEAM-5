@@ -19,16 +19,14 @@ import org.bson.BsonValue;
 
 public class Menu{
 
-    public void startUp() {
+    public void startUp(Database reviewDatabase) {
 
-        // Create a collection in the database to store Review objects
-        Database reviewDatabase = new Database("uberReviews", "reviews");
         reviewDatabase.createCollection();
 
         // Parse UberReviewsTestData.csv
-        String csvFile = "src/main/resources/UberReviewsData.csv";
+        String csvFile = "src/main/resources/UberReviewsTestData.csv";
         String line;
-        String delimiter = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)\")";
+        String delimiter = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             // Skip the first header line
@@ -55,7 +53,10 @@ public static void main(String[] args) {
     System.out.println("Initializing the Uber Review app...");
     System.out.println("Hello! Welcome to the Uber Review app!");
     Scanner scanner = new Scanner(System.in);
-
+    // Create a collection in the database to store Review objects
+    Database reviewDatabase = new Database("uberReviews", "reviews");
+    Menu menu = new Menu();
+    menu.startUp(reviewDatabase);
     int choice = 0;
     // int deletion = 0;
     while (choice != 6) {
@@ -80,8 +81,6 @@ public static void main(String[] args) {
         switch (choice) {
             case 1:
                 System.out.println("Adding a Review to the database");
-                Menu menu = new Menu();
-                menu.startUp();
                 break;
 
             case 2:
@@ -116,5 +115,6 @@ public static void main(String[] args) {
                 break;
         }
     }
+    scanner.close();
 }
 }

@@ -13,7 +13,7 @@ public class Database {
 
     public Database(String dbName, String collectionName) {
         // connection string
-        this.connectionString = "mongodb+srv://username:password@uberReviewData.ebpvq.mongodb.net/?retryWrites=true&w=majority&appName=uberReviewData";
+        this.connectionString = "mongodb+srv://zocarroll:aUM6rPmPoN9m9PyF@uberReviewData.ebpvq.mongodb.net/?retryWrites=true&w=majority&appName=uberReviewData";
         this.databaseName = dbName;
         this.collectionName = collectionName;
     } // Database constructor with connection string for the database
