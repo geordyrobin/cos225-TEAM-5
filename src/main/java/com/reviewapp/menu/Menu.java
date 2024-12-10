@@ -91,7 +91,7 @@ public static void main(String[] args) {
                 String reviewLength = String.valueOf(reviewText.length());
                 System.out.println("The length of the review is " + reviewLength);
                 String reviewTime = "12/10/2024";
-                String reviewID = Long.toString(reviewDatabase.getCount()+1);
+                String reviewID = Long.toString(reviewDatabase.getCount()+2001);
                 System.out.println("The ID of the review is " + reviewID);
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
                 reviewDatabase.addToDatabase(reviewObject.getDocument());
