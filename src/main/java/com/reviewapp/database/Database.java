@@ -73,4 +73,25 @@ public class Database {
 
     }
 
+    public Document getDocumentByID(String id) {
+
+        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+
+            MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
+            MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
+
+            return reviewCollection.find(new Document("ID ", id)).first();
+
+        }
+    }
+
+    public Long getCount(){
+        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+
+            MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
+            MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
+            
+            return reviewCollection.countDocuments();
+        }
+    }
 }

@@ -64,8 +64,8 @@ public static void main(String[] args) {
         System.out.println("Please select one of the following options ");
         System.out.println("1. Add a Uber review to the database.");
         System.out.println("2. Remove A Uber review from database.");
-        //System.out.println("3. Find specific rating reviews.");
-        //System.out.println("4. Classify Uber review.");
+        System.out.println("3. Find specific rating reviews.");
+        System.out.println("4. Classify Uber review.");
         System.out.println("5. Edit Uber review."); 
         System.out.println("6. Exit.");
 
@@ -80,7 +80,22 @@ public static void main(String[] args) {
         }
         switch (choice) {
             case 1:
-                System.out.println("Adding a Review to the database");
+                System.out.println("Adding a review to the database");
+                System.out.print("Enter review text: ");
+                String reviewText = scanner.nextLine();
+                System.out.print("Would you like to enter a review score of 1-5 (y/n))");
+                String reviewScore = "";
+                if ("y" == scanner.next()){
+                    reviewScore = scanner.nextLine();
+                }
+                String reviewLength = String.valueOf(reviewText.length());
+                System.out.println("The length of the review is " + reviewLength);
+                String reviewTime = "12/10/2024";
+                String reviewID = Long.toString(reviewDatabase.getCount()+1);
+                System.out.println("The ID of the review is " + reviewID);
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
+                reviewDatabase.addToDatabase(reviewObject.getDocument());
+                System.out.println("Review added to the database");
                 break;
 
             case 2:
@@ -91,7 +106,11 @@ public static void main(String[] args) {
 
             case 3: 
                 System.out.println("Ok, let's find you some reviews!");
-                
+                System.out.print("Enter the ID of the review you want to see: ");
+                String revID = scanner.nextLine();
+                Document chosenReview = reviewDatabase.getDocumentByID(revID);
+                System.out.println(chosenReview);
+
                 break;
             case 4:
                 System.out.println("Let's try to classify a review");
@@ -103,7 +122,7 @@ public static void main(String[] args) {
                 break;
             case 6:
                 System.out.println("Exiting the movie app...");
-                
+                reviewDatabase.deleteCollection();
                 break;
 
             default:
