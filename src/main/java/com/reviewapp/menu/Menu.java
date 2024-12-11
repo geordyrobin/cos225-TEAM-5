@@ -1,21 +1,12 @@
 package com.reviewapp.menu;
 import java.util.Scanner;
 import org.bson.Document;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertOneResult;
 import com.reviewapp.database.Database;
 import com.reviewapp.reviews.Review;
-
-import org.bson.conversions.Bson;
-import static com.mongodb.client.model.Filters.eq;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import org.bson.BsonValue;
+
 
 public class Menu extends Delete{
 
@@ -58,7 +49,7 @@ public static void main(String[] args) {
     Menu menu = new Menu();
     menu.startUp(reviewDatabase);
     int choice = 0;
-    int deletion = 0;
+    //int deletion = 0;
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
