@@ -80,7 +80,7 @@ public class Database {
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
 
-            return reviewCollection.find(new Document("ID ", id)).first();
+            return reviewCollection.find(new Document("ID", id)).first();
 
         }
     }
@@ -90,7 +90,7 @@ public class Database {
 
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
-            
+
             return reviewCollection.countDocuments();
         }
     }
