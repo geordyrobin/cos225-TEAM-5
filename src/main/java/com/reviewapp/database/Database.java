@@ -152,25 +152,25 @@ public class Database {
                     break;
 
                 case 1:
-                
-                reviewCollection.updateOne(eq("_id", id), combine(set("Text", text), currentDate("Time")));
+
+                reviewCollection.updateOne(eq("_id", id), combine(set("Text", text), set("Length",String.valueOf(text.length())), currentDate("Time")));
                     break;
                 
                 case 2:
 
+                reviewCollection.updateOne(eq("_id", id), combine(set("Score", score), currentDate("Time")));
                     break;
 
                 case 3:
                 
+                reviewCollection.updateOne(eq("_id", id), combine(set("Text", text), set("Length",String.valueOf(text.length())), set("Score", score), currentDate("Time")));
                     break;
                 
                 default:
                     System.out.println("Invalid choice.");
                     break;
             }
-            scanner.close();
-            //Publisher<UpdateResult> updateOnePublisher = reviewCollection.updateOne(eq("_id", id), combine(set("size.uom", "cm"), set("status", "P"), currentDate("lastModified")));
-            
+            scanner.close();            
         }
     }
 
