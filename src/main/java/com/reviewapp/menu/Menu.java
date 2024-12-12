@@ -6,6 +6,9 @@ import com.reviewapp.reviews.Review;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 
 public class Menu extends Delete{
@@ -32,7 +35,8 @@ public class Menu extends Delete{
                 String reviewTime = reviewData[4];
 
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
-                reviewDatabase.addToDatabase(reviewObject.getDocument());
+               // List<? extends Document> reviewDocument.addTo(reviewObject.getDocument());
+                reviewDatabase.addOneToDatabase(reviewObject.getDocument());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +53,6 @@ public static void main(String[] args) {
     Menu menu = new Menu();
     menu.startUp(reviewDatabase);
     int choice = 0;
-    //int deletion = 0;
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
@@ -81,11 +84,11 @@ public static void main(String[] args) {
                 }
                 String reviewLength = String.valueOf(reviewText.length());
                 System.out.println("The length of the review is " + reviewLength);
-                String reviewTime = "12/10/2024";
+                String reviewTime = Instant.now().atZone(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
                 String reviewID = Long.toString(reviewDatabase.getCount()+2001);
                 System.out.println("The ID of the review is " + reviewID);
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
-                reviewDatabase.addToDatabase(reviewObject.getDocument());
+                reviewDatabase.addOneToDatabase(reviewObject.getDocument());
                 System.out.println("Review added to the database");
                 break;
 

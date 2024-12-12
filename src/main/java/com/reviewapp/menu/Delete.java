@@ -18,7 +18,7 @@ abstract public class Delete{
       MongoDatabase uberReviewDB = mongoClient.getDatabase("uberReviewData");
       MongoCollection<Document> gradesCollection = uberReviewDB.getCollection("reviews");
       // delete one document
-      Bson filter = eq("id", target);
+      Bson filter = eq("_id", target);
       DeleteResult result = gradesCollection.deleteOne(filter);
       System.out.println(result); 
     }

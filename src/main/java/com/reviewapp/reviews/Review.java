@@ -39,8 +39,8 @@ public class Review{
     }
 
     public Document getDocument() {
-        Document document = new Document();
-        document.append("ID", reviewID);
+        Document document = new Document("_id",reviewID);
+       // document.append("ID", reviewID);
         document.append("Text", reviewText);
         document.append("Score", reviewScore);
         document.append("Length", reviewLength);
