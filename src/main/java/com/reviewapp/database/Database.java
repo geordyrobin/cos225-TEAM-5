@@ -86,15 +86,15 @@ public class Database {
 
     }
 
-    public Document getDocumentByID(String id) {
+    public Review getDocumentByID(String id) {
 
         try (MongoClient mongoClient = MongoClients.create(connectionString)) {
 
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
 
-            return reviewCollection.find(new Document("_id", id)).first();
-
+            Review foundReview = new Review(reviewCollection.find(new Document("_id", id)).first());
+            return foundReview;
         }
     }
 

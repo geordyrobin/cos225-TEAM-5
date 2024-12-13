@@ -103,8 +103,10 @@ public static void main(String[] args) {
                 System.out.println("Ok, let's find you some reviews!");
                 System.out.print("Enter the ID of the review you want to see: ");
                 revID = scanner.nextLine();
-                Document chosenReview = reviewDatabase.getDocumentByID(revID);
-                System.out.println(chosenReview);
+                Review chosenReview = reviewDatabase.getDocumentByID(revID);
+                System.out.println("The review you found was\n\tId: " + chosenReview.getReviewID() +
+                    "\n\tReview Text: " + chosenReview.getReviewText() + "\n\tScore: " + chosenReview.getReviewScore() +
+                    "\n\tLength of: " + chosenReview.getReviewLength() + "\n\tDate of Review: " +chosenReview.getReviewTime());
 
                 break;
             case 4:

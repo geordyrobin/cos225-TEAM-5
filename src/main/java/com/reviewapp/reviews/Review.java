@@ -38,9 +38,17 @@ public class Review{
         return reviewTime;
     }
 
+    public Review(Document document){
+        this.reviewText = document.getString("Text");
+        this.reviewScore = document.getString("Score");
+        this.reviewID = document.getString("_id");
+        this.reviewLength = document.getString("Length");
+        this.reviewTime = document.getString("Time"); 
+    }
+
+
     public Document getDocument() {
         Document document = new Document("_id",reviewID);
-       // document.append("ID", reviewID);
         document.append("Text", reviewText);
         document.append("Score", reviewScore);
         document.append("Length", reviewLength);
