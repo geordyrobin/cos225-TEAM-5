@@ -1,21 +1,15 @@
 package com.reviewapp.menu;
 import java.util.Scanner;
 import org.bson.Document;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertOneResult;
 import com.reviewapp.database.Database;
 import com.reviewapp.reviews.Review;
-
-import org.bson.conversions.Bson;
-import static com.mongodb.client.model.Filters.eq;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import org.bson.BsonValue;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
 
 public class Menu extends Delete{
 
@@ -41,7 +35,8 @@ public class Menu extends Delete{
                 String reviewTime = reviewData[4];
 
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
-                reviewDatabase.addToDatabase(reviewObject.getDocument());
+               // List<? extends Document> reviewDocument.addTo(reviewObject.getDocument());
+                reviewDatabase.addOneToDatabase(reviewObject.getDocument());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +53,7 @@ public static void main(String[] args) {
     Menu menu = new Menu();
     menu.startUp(reviewDatabase);
     int choice = 0;
-    int deletion = 0;
+    String revID = "";
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
@@ -83,18 +78,18 @@ public static void main(String[] args) {
                 System.out.println("Adding a review to the database");
                 System.out.print("Enter review text: ");
                 String reviewText = scanner.nextLine();
-                System.out.print("Would you like to enter a review score of 1-5 (y/n))");
+                System.out.print("Would you like to enter a review score of 1-5 (y/n)");
                 String reviewScore = "";
                 if ("y" == scanner.next()){
                     reviewScore = scanner.nextLine();
                 }
                 String reviewLength = String.valueOf(reviewText.length());
                 System.out.println("The length of the review is " + reviewLength);
-                String reviewTime = "12/10/2024";
+                String reviewTime = Instant.now().atZone(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
                 String reviewID = Long.toString(reviewDatabase.getCount()+2001);
                 System.out.println("The ID of the review is " + reviewID);
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
-                reviewDatabase.addToDatabase(reviewObject.getDocument());
+                reviewDatabase.addOneToDatabase(reviewObject.getDocument());
                 System.out.println("Review added to the database");
                 break;
 
@@ -107,9 +102,11 @@ public static void main(String[] args) {
             case 3: 
                 System.out.println("Ok, let's find you some reviews!");
                 System.out.print("Enter the ID of the review you want to see: ");
-                String revID = scanner.nextLine();
-                Document chosenReview = reviewDatabase.getDocumentByID(revID);
-                System.out.println(chosenReview);
+                revID = scanner.nextLine();
+                Review chosenReview = reviewDatabase.getDocumentByID(revID);
+                System.out.println("The review you found was\n\tId: " + chosenReview.getReviewID() +
+                    "\n\tReview Text: " + chosenReview.getReviewText() + "\n\tScore: " + chosenReview.getReviewScore() +
+                    "\n\tLength of: " + chosenReview.getReviewLength() + "\n\tDate of Review: " +chosenReview.getReviewTime());
 
                 break;
             case 4:
@@ -118,7 +115,9 @@ public static void main(String[] args) {
                 break;
             case 5:
                 System.out.println("Let's try to edit this review");
-
+                System.out.print("Enter the ID of the review you want to change: ");
+                revID = scanner.nextLine();
+                reviewDatabase.updateDocumentByID(revID);
                 break;
             case 6:
                 System.out.println("Exiting the movie app...");
