@@ -108,7 +108,7 @@ public class Database {
             Scanner scanner = new Scanner(System.in);
             int updates = 0;
             String text = "", score = "";
-            while (choice != 4) {
+            while (choice != 3) {
 
                 System.out.println("Which field would you like to update?");
                 System.out.println("1. Review text.");
@@ -152,25 +152,25 @@ public class Database {
                     break;
 
                 case 1:
-
                 reviewCollection.updateOne(eq("_id", id), combine(set("Text", text), set("Length",String.valueOf(text.length())), currentDate("Time")));
+                System.out.println("Updated review text, length, and date.");
                     break;
                 
                 case 2:
-
                 reviewCollection.updateOne(eq("_id", id), combine(set("Score", score), currentDate("Time")));
+                System.out.println("Updated review score and date.");
                     break;
 
                 case 3:
-                
                 reviewCollection.updateOne(eq("_id", id), combine(set("Text", text), set("Length",String.valueOf(text.length())), set("Score", score), currentDate("Time")));
+                System.out.println("Updated review text, length, score, and date.");
                     break;
                 
                 default:
                     System.out.println("Invalid choice.");
                     break;
             }
-            scanner.close();            
+            //scanner.close();            
         }
     }
 

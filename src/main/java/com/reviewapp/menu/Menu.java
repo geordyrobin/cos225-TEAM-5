@@ -53,6 +53,7 @@ public static void main(String[] args) {
     Menu menu = new Menu();
     menu.startUp(reviewDatabase);
     int choice = 0;
+    String revID = "";
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
@@ -77,7 +78,7 @@ public static void main(String[] args) {
                 System.out.println("Adding a review to the database");
                 System.out.print("Enter review text: ");
                 String reviewText = scanner.nextLine();
-                System.out.print("Would you like to enter a review score of 1-5 (y/n))");
+                System.out.print("Would you like to enter a review score of 1-5 (y/n)");
                 String reviewScore = "";
                 if ("y" == scanner.next()){
                     reviewScore = scanner.nextLine();
@@ -101,7 +102,7 @@ public static void main(String[] args) {
             case 3: 
                 System.out.println("Ok, let's find you some reviews!");
                 System.out.print("Enter the ID of the review you want to see: ");
-                String revID = scanner.nextLine();
+                revID = scanner.nextLine();
                 Document chosenReview = reviewDatabase.getDocumentByID(revID);
                 System.out.println(chosenReview);
 
@@ -112,7 +113,9 @@ public static void main(String[] args) {
                 break;
             case 5:
                 System.out.println("Let's try to edit this review");
-
+                System.out.print("Enter the ID of the review you want to change: ");
+                revID = scanner.nextLine();
+                reviewDatabase.updateDocumentByID(revID);
                 break;
             case 6:
                 System.out.println("Exiting the movie app...");
