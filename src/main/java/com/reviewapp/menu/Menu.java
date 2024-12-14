@@ -32,7 +32,7 @@ public class Menu extends Delete{
         reviewDatabase.createCollection();
 
         // Parse UberReviewsTestData.csv
-        String csvFile = "src/main/resources/testingcsv.csv";//UberReviewsTestData.csv";
+        String csvFile = "src/main/resources/UberReviewsTestData.csv";
         String line;
         String delimiter = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 

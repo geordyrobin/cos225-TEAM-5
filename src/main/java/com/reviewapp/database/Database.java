@@ -1,29 +1,14 @@
 package com.reviewapp.database;
 
 import static com.mongodb.client.model.Filters.eq;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Flow.Publisher;
-
-import org.bson.BsonValue;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Updates.*;
-
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
-import com.mongodb.client.result.UpdateResult;
 import com.reviewapp.reviews.Review;
 
 public class Database {
@@ -174,6 +159,7 @@ public class Database {
                     System.out.println("Invalid choice.");
                     break;
             }
+            //Closing scanner here causes crash
             //scanner.close();            
         }
     }
