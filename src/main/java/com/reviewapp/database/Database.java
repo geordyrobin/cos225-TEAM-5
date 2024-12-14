@@ -2,6 +2,7 @@ package com.reviewapp.database;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -9,14 +10,19 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Flow.Publisher;
 
+import org.bson.BsonValue;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Updates.*;
+
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import com.reviewapp.reviews.Review;
 
@@ -38,15 +44,14 @@ public class Database {
 
     }
 
-    public void addOneToDatabase(Document document) {
+    public InsertOneResult addOneToDatabase(Document document) {
 
         try (MongoClient mongoClient = MongoClients.create(connectionString)) {
 
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
 
-            reviewCollection.insertOne(document);
-
+            return reviewCollection.insertOne(document);
         }
 
     }
@@ -93,8 +98,7 @@ public class Database {
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
 
-            Review foundReview = new Review(reviewCollection.find(new Document("_id", id)).first());
-            return foundReview;
+            return new Review(reviewCollection.find(new Document("_id", id)).first());
         }
     }
 

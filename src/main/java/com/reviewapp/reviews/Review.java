@@ -2,6 +2,7 @@ package com.reviewapp.reviews;
 
 import org.bson.Document;
 
+
 public class Review{
     
     private String reviewText;
@@ -9,13 +10,15 @@ public class Review{
     private String reviewID;
     private String reviewLength;
     private String reviewTime;
+    private String sentiment;
 
-    public Review(String reviewText, String reviewScore, String reviewID, String reviewLength, String reviewTime) {
+    public Review(String reviewText, String reviewScore, String reviewID, String reviewLength, String reviewTime, String sentiment) {
         this.reviewText = reviewText;
         this.reviewScore = reviewScore;
         this.reviewID = reviewID;
         this.reviewLength = reviewLength;
         this.reviewTime = reviewTime;    
+        this.sentiment = sentiment;
     }
 
     public String getReviewText() {
@@ -38,12 +41,17 @@ public class Review{
         return reviewTime;
     }
 
+    public String getSentiment() {
+        return sentiment;
+    }
+
     public Review(Document document){
         this.reviewText = document.getString("Text");
         this.reviewScore = document.getString("Score");
         this.reviewID = document.getString("_id");
         this.reviewLength = document.getString("Length");
         this.reviewTime = document.getString("Time"); 
+        this.sentiment = document.getString("Sentiment");
     }
 
 
@@ -53,6 +61,7 @@ public class Review{
         document.append("Score", reviewScore);
         document.append("Length", reviewLength);
         document.append("Time", reviewTime);
+        document.append("Sentiment", sentiment);
         return document;
     }
 }

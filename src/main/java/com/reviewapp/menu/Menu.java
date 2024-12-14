@@ -1,24 +1,38 @@
 package com.reviewapp.menu;
-import java.util.Scanner;
-import org.bson.Document;
+
+
+
 import com.reviewapp.database.Database;
+import com.reviewapp.nlp.TFIDF;
 import com.reviewapp.reviews.Review;
+import com.reviewapp.nlp.ReviewClassifier;
+import com.reviewapp.nlp.Processor;
+
+import java.util.Scanner;
+import com.mongodb.client.result.InsertOneResult;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import org.bson.BsonValue;
 
 
 public class Menu extends Delete{
 
-    public void startUp(Database reviewDatabase) {
 
+    private static Processor processor = new Processor("src/main/resources/listOfStopWords.txt");
+    private static TFIDF tfidf = new TFIDF(processor);
+    private  static ReviewClassifier classifier = new ReviewClassifier(processor);
+
+
+    public void startUp() {
+        Database reviewDatabase = new Database("uberReviews", "reviews");
         reviewDatabase.createCollection();
 
         // Parse UberReviewsTestData.csv
-        String csvFile = "src/main/resources/UberReviewsTestData.csv";
+        String csvFile = "src/main/resources/testingcsv.csv";//UberReviewsTestData.csv";
         String line;
         String delimiter = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
@@ -34,26 +48,77 @@ public class Menu extends Delete{
                 String reviewLength = reviewData[3];
                 String reviewTime = reviewData[4];
 
-                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
+                //sentiment set for testing
+                String sentiment = "None";
+
+                //sentiment set for training
+                if(Integer.parseInt(reviewScore) >= 3){
+                    sentiment = "positive";
+                } else { sentiment = "negative";}
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, sentiment);
                // List<? extends Document> reviewDocument.addTo(reviewObject.getDocument());
-                reviewDatabase.addOneToDatabase(reviewObject.getDocument());
+                InsertOneResult result = reviewDatabase.addOneToDatabase(reviewObject.getDocument());
+                BsonValue id = result.getInsertedId();
+                tfidf.addSample(id, reviewObject.getReviewText());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        Database trainingDatabase = new Database("uberTraining", "reviews");
+        reviewDatabase.createCollection();
+        // Parse the UberReviewsTrainingData.csv
+        String reviewCSVFile = "src/main/resources/UberReviewsTrainingData.csv";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(reviewCSVFile))) {
+            // Skip the first header line
+            br.readLine();
+
+            while ((line = br.readLine()) != null) {
+                String[] reviewData = line.split(delimiter, -1);
+                String reviewText = reviewData[0];
+                String reviewScore = reviewData[1];
+                String reviewID = reviewData[2];
+                String reviewLength = reviewData[3];
+                String reviewTime = reviewData[4];
+                String sentiment = "none";
+                if(Integer.parseInt(reviewScore) >= 3){
+                    sentiment = "positive";
+                } else { sentiment = "negative";}
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, sentiment);
+                trainingDatabase.addOneToDatabase(reviewObject.getDocument());
+                classifier.addSample(reviewObject);
+            }
+            classifier.train();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+    public void shutDown(){
+        Database reviewDatabase = new Database("uberReviews", "reviews");
+        Database trainingDatabase = new Database("uberTraining", "reviews");
+        reviewDatabase.deleteCollection();
+        trainingDatabase.deleteCollection();
+    }
+    public static String classifyReview(String review){
+        String sentiment = classifier.classify(review);
+        return sentiment;
+    }
+
 public static void main(String[] args) {
 
     System.out.println("Initializing the Uber Review app...");
     System.out.println("Hello! Welcome to the Uber Review app!");
     Scanner scanner = new Scanner(System.in);
     // Create a collection in the database to store Review objects
-    Database reviewDatabase = new Database("uberReviews", "reviews");
     Menu menu = new Menu();
-    menu.startUp(reviewDatabase);
+    menu.startUp();
+    Database reviewDatabase = new Database("uberReviews", "reviews");
+    reviewDatabase.createCollection();
     int choice = 0;
     String revID = "";
+    String choiceTwo = "";
     while (choice != 6) {
 
         System.out.println("Please select one of the following options ");
@@ -78,9 +143,16 @@ public static void main(String[] args) {
                 System.out.println("Adding a review to the database");
                 System.out.print("Enter review text: ");
                 String reviewText = scanner.nextLine();
-                System.out.print("Would you like to enter a review score of 1-5 (y/n)");
+                System.out.print("Would you like to enter a review score of 1-5 (1 for yes, 2 for no) ");
                 String reviewScore = "";
-                if ("y" == scanner.next()){
+                if (scanner.hasNextLine()) {
+                    choiceTwo = scanner.nextLine();
+                    scanner.nextLine();
+                } else {
+                    System.out.println("Invalid input. Please enter a number.");
+                    scanner.nextLine();
+                }
+                if ("1" == choiceTwo){
                     reviewScore = scanner.nextLine();
                 }
                 String reviewLength = String.valueOf(reviewText.length());
@@ -88,7 +160,9 @@ public static void main(String[] args) {
                 String reviewTime = Instant.now().atZone(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
                 String reviewID = Long.toString(reviewDatabase.getCount()+2001);
                 System.out.println("The ID of the review is " + reviewID);
-                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
+                String sentiment = classifyReview(reviewText);
+                System.out.println("The sentiment of the review is " + sentiment);
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, "blank for sentiment later");
                 reviewDatabase.addOneToDatabase(reviewObject.getDocument());
                 System.out.println("Review added to the database");
                 break;
@@ -110,8 +184,10 @@ public static void main(String[] args) {
 
                 break;
             case 4:
-                System.out.println("Let's try to classify a review");
-                
+                    System.out.println("Let's try to classify a review");
+                    System.out.println("Please enter the review of the movie");
+                    String review = scanner.nextLine();
+                    System.out.println("The sentiment of the review is: " + classifyReview(review));
                 break;
             case 5:
                 System.out.println("Let's try to edit this review");
@@ -121,7 +197,7 @@ public static void main(String[] args) {
                 break;
             case 6:
                 System.out.println("Exiting the movie app...");
-                reviewDatabase.deleteCollection();
+                menu.shutDown();
                 break;
 
             default:
