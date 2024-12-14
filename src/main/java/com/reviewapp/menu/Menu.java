@@ -51,10 +51,6 @@ public class Menu extends Delete{
                 //sentiment set for testing
                 String sentiment = "None";
 
-                //sentiment set for training
-                if(Integer.parseInt(reviewScore) >= 3){
-                    sentiment = "positive";
-                } else { sentiment = "negative";}
                 Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, sentiment);
                // List<? extends Document> reviewDocument.addTo(reviewObject.getDocument());
                 InsertOneResult result = reviewDatabase.addOneToDatabase(reviewObject.getDocument());
@@ -162,7 +158,7 @@ public static void main(String[] args) {
                 System.out.println("The ID of the review is " + reviewID);
                 String sentiment = classifyReview(reviewText);
                 System.out.println("The sentiment of the review is " + sentiment);
-                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, "blank for sentiment later");
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, sentiment);
                 reviewDatabase.addOneToDatabase(reviewObject.getDocument());
                 System.out.println("Review added to the database");
                 break;
@@ -184,9 +180,23 @@ public static void main(String[] args) {
 
                 break;
             case 4:
-                    System.out.println("Let's try to classify a review");
-                    System.out.println("Please enter the review of the movie");
-                    String review = scanner.nextLine();
+                    System.out.println("Let's try to classify a review!\nEnter \"1\" to enter a new review, or \"2\" to find an existing one: ");
+                    String review ="";
+                    if (scanner.hasNextLine()) {
+                        choiceTwo = scanner.nextLine();
+                        scanner.nextLine();
+                    } else {
+                        System.out.println("Invalid input. Please enter a number.");
+                        scanner.nextLine();
+                    }
+                    if ("1" == choiceTwo){
+                        System.out.println("Please enter the review of the movie");
+                    review = scanner.nextLine();
+                    } else{ 
+                        System.out.print("Enter the ID of the review you want to classify: ");
+                        revID = scanner.nextLine();
+                        review = reviewDatabase.getDocumentByID(revID).getReviewText();
+                    }
                     System.out.println("The sentiment of the review is: " + classifyReview(review));
                 break;
             case 5:
