@@ -37,12 +37,11 @@ public class ReviewClassifier {
     /*
      * This method adds a review from the training set and updates the word count
      * 
-     * @param id: The id of the review
      * @param review: The Review object
      * 
      * @return void
      */
-    public void addSample(BsonValue id, Review review) {
+    public void addSample(Review review) {
         String[] words = processor.processText(review.getReviewText());
         if (review.getSentiment().equals("positive")) {
             updateWordCount(positiveWordCount, words);
