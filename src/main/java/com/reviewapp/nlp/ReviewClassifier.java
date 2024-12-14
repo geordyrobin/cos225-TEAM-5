@@ -4,7 +4,6 @@ package com.reviewapp.nlp;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.bson.BsonValue;
 import com.reviewapp.reviews.Review;
 
 
