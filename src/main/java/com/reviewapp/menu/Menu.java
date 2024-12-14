@@ -190,7 +190,7 @@ public static void main(String[] args) {
                         scanner.nextLine();
                     }
                     if ("1" == choiceTwo){
-                        System.out.println("Please enter the review of the movie");
+                        System.out.println("Please enter the review");
                     review = scanner.nextLine();
                     } else{ 
                         System.out.print("Enter the ID of the review you want to classify: ");
