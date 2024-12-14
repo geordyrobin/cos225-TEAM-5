@@ -2,13 +2,13 @@ package com.reviewapp.database;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Flow.Publisher;
-
 import org.bson.Document;
 
 import com.mongodb.client.MongoClient;
@@ -93,8 +93,11 @@ public class Database {
             MongoDatabase reviewDatabase = mongoClient.getDatabase(this.databaseName);
             MongoCollection<Document> reviewCollection = reviewDatabase.getCollection(this.collectionName);
 
-            Review foundReview = new Review(reviewCollection.find(new Document("_id", id)).first());
-            return foundReview;
+            return new Review(reviewCollection.find(new Document("_id", id)).first());
+
+            
+
+            
         }
     }
 

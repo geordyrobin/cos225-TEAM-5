@@ -18,7 +18,7 @@ public class Menu extends Delete{
         reviewDatabase.createCollection();
 
         // Parse UberReviewsTestData.csv
-        String csvFile = "src/main/resources/testingcsv";//UberReviewsTestData.csv";
+        String csvFile = "src/main/resources/testingcsv.csv";//UberReviewsTestData.csv";
         String line;
         String delimiter = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
 
@@ -34,7 +34,14 @@ public class Menu extends Delete{
                 String reviewLength = reviewData[3];
                 String reviewTime = reviewData[4];
 
-                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
+                //sentiment set for testing
+                String sentiment = "None";
+
+                //sentiment set for training
+                if(Integer.parseInt(reviewScore) >= 3){
+                    sentiment = "positive";
+                } else { sentiment = "negative";}
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, sentiment);
                // List<? extends Document> reviewDocument.addTo(reviewObject.getDocument());
                 reviewDatabase.addOneToDatabase(reviewObject.getDocument());
             }
@@ -88,7 +95,10 @@ public static void main(String[] args) {
                 String reviewTime = Instant.now().atZone(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE);
                 String reviewID = Long.toString(reviewDatabase.getCount()+2001);
                 System.out.println("The ID of the review is " + reviewID);
-                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime);
+
+                // Add sentiment here
+
+                Review reviewObject = new Review(reviewText, reviewScore, reviewID, reviewLength, reviewTime, "blank for sentiment later");
                 reviewDatabase.addOneToDatabase(reviewObject.getDocument());
                 System.out.println("Review added to the database");
                 break;
